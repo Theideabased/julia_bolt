@@ -40,7 +40,11 @@ export default defineConfig((config) => {
           return null;
         },
       },
-      config.mode !== 'test' && remixCloudflareDevProxy(),
+      config.mode !== 'test' && 
+      config.command === 'serve' && 
+      !process.env.VERCEL && 
+      !process.env.DISABLE_WRANGLER && 
+      remixCloudflareDevProxy(),
       remixVitePlugin({
         future: {
           v3_fetcherPersist: true,

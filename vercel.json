@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "build/client",
+  "framework": null,
+  "installCommand": "npm install",
+  "env": {
+    "DISABLE_WRANGLER": "true"
+  }
+}
