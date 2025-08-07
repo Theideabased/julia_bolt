@@ -2,13 +2,25 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "build/client",
-  "routes": [
+  "framework": null,
+  "functions": {},
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
     {
-      "handle": "filesystem"
-    },
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

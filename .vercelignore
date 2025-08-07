@@ -1,0 +1,5 @@
+build/server
+node_modules
+.env*
+*.log
+.cache
