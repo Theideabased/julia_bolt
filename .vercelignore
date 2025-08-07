@@ -1,5 +1,9 @@
+build/server/**
 build/server
 node_modules
 .env*
 *.log
 .cache
+remix.config.js
+*.server.*
+**/*.server.*
