@@ -1,7 +1,17 @@
 import { RemixBrowser } from '@remix-run/react';
 import { startTransition } from 'react';
-import { hydrateRoot } from 'react-dom/client';
+import { hydrateRoot, createRoot } from 'react-dom/client';
 
-startTransition(() => {
-  hydrateRoot(document.getElementById('root')!, <RemixBrowser />);
-});
+const container = document.getElementById('root')!;
+
+if (container.innerHTML.trim() === '') {
+  // SPA mode - no server-rendered content
+  startTransition(() => {
+    createRoot(container).render(<RemixBrowser />);
+  });
+} else {
+  // SSR mode - hydrate existing content
+  startTransition(() => {
+    hydrateRoot(container, <RemixBrowser />);
+  });
+}
