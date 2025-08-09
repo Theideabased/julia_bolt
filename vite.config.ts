@@ -46,12 +46,13 @@ export default defineConfig((config) => {
       !process.env.DISABLE_WRANGLER && 
       remixCloudflareDevProxy(),
       remixVitePlugin({
+        ignoredRouteFiles: ['**/.*'],
         future: {
           v3_fetcherPersist: true,
           v3_relativeSplatPath: true,
           v3_throwAbortReason: true,
           v3_lazyRouteDiscovery: true,
-          v3_singleFetch: false, // Disable single fetch for better compatibility
+          v3_singleFetch: false, // Disabled for Vercel compatibility
         },
       }),
       UnoCSS(),

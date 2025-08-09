@@ -1,39 +1,31 @@
 import { RemixBrowser } from '@remix-run/react';
-import { startTransition, StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
+import { hydrateRoot } from 'react-dom/client';
 
-const container = document.getElementById('root')!;
-
-// Ensure DOM is fully loaded before attempting to render
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApp);
-} else {
-  initializeApp();
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('Could not find root element');
 }
 
-function initializeApp() {
-  try {
-    // For client-side rendering, we need to render directly
-    const renderApp = () => (
+// Check if the app is server-rendered or needs client-side rendering
+const isServerRendered = container.innerHTML.trim() !== '';
+
+if (isServerRendered) {
+  // Hydrate server-rendered content
+  hydrateRoot(
+    container,
+    <StrictMode>
+      <RemixBrowser />
+    </StrictMode>
+  );
+} else {
+  // Render client-side (for static builds)
+  import('react-dom/client').then(({ createRoot }) => {
+    const root = createRoot(container);
+    root.render(
       <StrictMode>
         <RemixBrowser />
       </StrictMode>
     );
-
-    // Use createRoot instead of hydrateRoot for static deployment
-    startTransition(() => {
-      createRoot(container).render(renderApp());
-    });
-  } catch (error) {
-    console.error('Failed to initialize app:', error);
-    // Fallback rendering
-    const root = createRoot(container);
-    root.render(
-      <div style={{ padding: '20px', color: 'red' }}>
-        <h1>Loading Error</h1>
-        <p>There was an error loading the application. Please refresh the page.</p>
-        <pre>{String(error)}</pre>
-      </div>
-    );
-  }
+  });
 }
