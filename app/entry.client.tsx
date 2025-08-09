@@ -12,15 +12,28 @@ if (document.readyState === 'loading') {
 }
 
 function initializeApp() {
-  // For SPA mode, we need to render directly without expecting server-rendered content
-  const renderApp = () => (
-    <StrictMode>
-      <RemixBrowser />
-    </StrictMode>
-  );
+  try {
+    // For client-side rendering, we need to render directly
+    const renderApp = () => (
+      <StrictMode>
+        <RemixBrowser />
+      </StrictMode>
+    );
 
-  // Use startTransition for better performance
-  startTransition(() => {
-    createRoot(container).render(renderApp());
-  });
+    // Use createRoot instead of hydrateRoot for static deployment
+    startTransition(() => {
+      createRoot(container).render(renderApp());
+    });
+  } catch (error) {
+    console.error('Failed to initialize app:', error);
+    // Fallback rendering
+    const root = createRoot(container);
+    root.render(
+      <div style={{ padding: '20px', color: 'red' }}>
+        <h1>Loading Error</h1>
+        <p>There was an error loading the application. Please refresh the page.</p>
+        <pre>{String(error)}</pre>
+      </div>
+    );
+  }
 }
