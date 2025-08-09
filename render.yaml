@@ -3,13 +3,25 @@ services:
     name: julia-bolt
     runtime: node
     plan: starter  # Change to 'standard' for production
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build:render
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: "18"
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=4096"
       - key: PORT
         value: 10000
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: VITE_GITHUB_ACCESS_TOKEN
+        sync: false
+      - key: VITE_GITHUB_TOKEN_TYPE
+        value: classic
+      - key: VITE_LOG_LEVEL
+        value: info
     # Auto-deploy from main branch
     branch: main
     # Health check endpoint
@@ -19,8 +31,9 @@ services:
       paths:
         - app/**
         - public/**
+        - scripts/**
         - package.json
         - package-lock.json
         - vite.config.ts
         - tsconfig.json
-        - remix.config.ts
+        - vite-electron.config.ts

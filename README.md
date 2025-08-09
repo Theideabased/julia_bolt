@@ -288,11 +288,25 @@ npm run dockerrun
 
 Julia Bolt supports multiple deployment platforms:
 
-### **Vercel (Recommended)**
+### **Vercel (Current Live Demo)**
 - ✅ **Live Demo**: [https://julia-bolt.vercel.app/](https://julia-bolt.vercel.app/)
 - ✅ **One-click deployment**
 - ✅ **Automatic builds**
 - ✅ **Custom domains**
+
+### **Render (Recommended for Production)**
+- ✅ **Full Node.js Support**: Perfect for Remix applications
+- ✅ **Environment Variables**: Easy management
+- ✅ **Background Services**: Support for Julia agents
+- ✅ **Auto-deploy**: GitHub integration
+
+📋 **[Complete Render Deployment Guide](./DEPLOY_RENDER.md)**
+
+Quick Render Setup:
+1. Connect GitHub repository to Render
+2. Build Command: `npm ci --include=dev && npm run build:render`
+3. Start Command: `npm start`
+4. Add Environment Variable: `GITHUB_TOKEN=your_token`
 
 ### **Netlify**
 - ✅ **Direct deployment** from application
