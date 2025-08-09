@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: julia-bolt
+    runtime: node
+    plan: starter  # Change to 'standard' for production
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    # Auto-deploy from main branch
+    branch: main
+    # Health check endpoint
+    healthCheckPath: /api/health
+    # Build settings
+    buildFilter:
+      paths:
+        - app/**
+        - public/**
+        - package.json
+        - package-lock.json
+        - vite.config.ts
+        - tsconfig.json
+        - remix.config.ts
