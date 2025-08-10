@@ -47,12 +47,13 @@ export default defineConfig((config) => {
       remixCloudflareDevProxy(),
       remixVitePlugin({
         ignoredRouteFiles: ['**/.*'],
+        serverBuildFile: 'index.js',
         future: {
-          v3_fetcherPersist: true,
-          v3_relativeSplatPath: true,
-          v3_throwAbortReason: true,
-          v3_lazyRouteDiscovery: true,
-          v3_singleFetch: false, // Disabled for Vercel compatibility
+          v3_fetcherPersist: false,
+          v3_relativeSplatPath: false,
+          v3_throwAbortReason: false,
+          v3_lazyRouteDiscovery: false,
+          v3_singleFetch: false,
         },
       }),
       UnoCSS(),
