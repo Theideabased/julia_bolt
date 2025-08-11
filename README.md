@@ -1,9 +1,6 @@
 # Julia Bolt - AI-Powered Development with Julia Agents
 
-[![Julia Bolt: No-Code Development Powered by Julia Agents](./public/social_preview_index.jpg)](https://julia-bolt.vercel.app/)
-
-## 🚀 **[Live Demo: https://julia-bolt.vercel.app/](https://julia-bolt.vercel.app/)**
-## 🎥 **[Watch Demo Video: https://youtu.be/CqAjMuUNEgU](https://youtu.be/CqAjMuUNEgU)**
+![Julia Bolt: No-Code Development Powered by Julia Agents](./public/social_preview_index.jpg)
 
 ---
 
@@ -147,20 +144,102 @@ graph TD
 
 ## 📚 **Getting Started**
 
-### **1. Access the Live Application**
-Visit **[https://julia-bolt.vercel.app/](https://julia-bolt.vercel.app/)** to start using Julia Agents immediately.
+### **🚀 Local Development Setup**
 
-### **2. Watch the Demo**
-Check out our comprehensive demo video: **[https://youtu.be/CqAjMuUNEgU](https://youtu.be/CqAjMuUNEgU)**
+#### **Prerequisites**
+- **Node.js**: Version 18.18.0 or higher
+- **npm** or **pnpm**: Package manager
+- **Git**: Version control system
 
-### **3. Local Development Setup**
+#### **Quick Start**
 ```bash
+# 1. Clone the repository
 git clone https://github.com/Theideabased/julia_bolt.git
 cd julia_bolt
+
+# 2. Install dependencies
 npm install
+# or use pnpm for faster installation
+pnpm install
+
+# 3. Set up environment variables
 cp .env.production .env
-# Add your GitHub token to .env
+
+# 4. Configure your API keys in .env file
+# Add your AI provider API keys:
+# GROQ_API_KEY=your_groq_api_key_here
+# OPENAI_API_KEY=your_openai_api_key_here
+# ANTHROPIC_API_KEY=your_anthropic_api_key_here
+# GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key_here
+
+# 5. Add GitHub token for Julia Agent features (recommended)
+# GITHUB_TOKEN=ghp_your_github_token_here
+
+# 6. Start the development server
 npm run dev
+# or
+pnpm run dev
+```
+
+#### **Available Scripts**
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server (http://localhost:5173) |
+| `npm run build` | Build for production |
+| `npm run build:render` | Build optimized for Render deployment |
+| `npm run start` | Start production server |
+| `npm run test` | Run test suite |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript checks |
+
+#### **Environment Configuration**
+Create a `.env` file in the root directory with the following variables:
+
+```bash
+# AI Provider API Keys (at least one required)
+GROQ_API_KEY=your_groq_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_api_key_here
+TOGETHER_API_KEY=your_together_api_key_here
+XAI_API_KEY=your_xai_api_key_here
+
+# GitHub Integration (for Julia Agent features)
+GITHUB_TOKEN=ghp_your_github_token_here
+VITE_GITHUB_TOKEN_TYPE=classic
+
+# Optional: Development settings
+NODE_ENV=development
+WRANGLER_SEND_METRICS=false
+```
+
+#### **Getting API Keys**
+- **OpenAI**: [platform.openai.com](https://platform.openai.com/api-keys)
+- **Anthropic**: [console.anthropic.com](https://console.anthropic.com/)
+- **Google Gemini**: [aistudio.google.com](https://aistudio.google.com/app/apikey)
+- **Groq**: [console.groq.com](https://console.groq.com/keys)
+- **GitHub Token**: [github.com/settings/tokens](https://github.com/settings/tokens)
+
+#### **First Launch**
+1. Open your browser to `http://localhost:5173`
+2. Select your preferred AI model from the settings
+3. Start creating with Julia Agents!
+
+### **🛠️ Troubleshooting**
+
+#### **Common Issues**
+- **Port 5173 in use**: Change port with `--port 3000` flag
+- **Node version**: Ensure Node.js >= 18.18.0
+- **Memory issues**: Use `NODE_OPTIONS='--max-old-space-size=4096'` for large projects
+- **API key errors**: Verify your API keys are correctly set in `.env`
+
+#### **Build Issues**
+```bash
+# Clear cache and rebuild
+npm cache clean --force
+rm -rf node_modules
+npm install
+npm run build
 ```
 
 ## 💡 **Use Cases Perfect for Julia Agents**
@@ -221,54 +300,16 @@ While Julia Bolt builds upon the excellent foundation of bolt.diy, our Julia Age
 
 ## 🛠️ **Technical Implementation**
 
-### **Prerequisites**
-- **Node.js** (v18 or higher)
-- **npm** or **pnpm**
-- **GitHub Account** (for token generation)
-- **Modern Browser** (Chrome, Firefox, Safari, Edge)
+### **Architecture Overview**
+Julia Bolt is built with modern web technologies optimized for AI-powered development:
 
-### **Local Development Setup**
-
-1. **Clone Repository**
-   ```bash
-   git clone https://github.com/Theideabased/julia_bolt.git
-   cd julia_bolt
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   npm install
-   # or
-   pnpm install
-   ```
-
-3. **Environment Configuration**
-   ```bash
-   cp .env.production .env
-   ```
-   
-   **Add your GitHub token to `.env`:**
-   ```bash
-   GITHUB_TOKEN=ghp_your_token_here
-   VITE_GITHUB_TOKEN_TYPE=classic
-   ```
-
-4. **Start Development Server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open Application**
-   Navigate to `http://localhost:5173`
-
-### **Available Scripts**
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run build:vercel` | Build optimized for Vercel |
-| `npm run preview` | Preview production build |
+- **Frontend**: React 18 + TypeScript
+- **Framework**: Remix (Full-stack React framework)
+- **Build Tool**: Vite (Fast development and optimized builds)
+- **Styling**: UnoCSS + Tailwind CSS
+- **State Management**: Nanostores (Atomic state management)
+- **AI Integration**: Multiple provider support (OpenAI, Anthropic, Google, Groq)
+- **Deployment**: Support for Vercel, Render, Netlify, and self-hosted
 | `npm run lint` | Run ESLint |
 | `npm run typecheck` | Run TypeScript checks |
 
@@ -288,8 +329,7 @@ npm run dockerrun
 
 Julia Bolt supports multiple deployment platforms:
 
-### **Vercel (Current Live Demo)**
-- ✅ **Live Demo**: [https://julia-bolt.vercel.app/](https://julia-bolt.vercel.app/)
+### **Vercel**
 - ✅ **One-click deployment**
 - ✅ **Automatic builds**
 - ✅ **Custom domains**
@@ -463,21 +503,22 @@ This project is open source and available under the [MIT License](./LICENSE).
 
 Ready to experience the future of AI-assisted development? Follow this checklist:
 
-- [ ] 🌐 **Visit [julia-bolt.vercel.app](https://julia-bolt.vercel.app/)**
-- [ ] 🎥 **Watch [demo video](https://youtu.be/CqAjMuUNEgU)**
+- [ ] 📥 **Clone the repository**: `git clone https://github.com/Theideabased/julia_bolt.git`
+- [ ] 📦 **Install dependencies**: `npm install`
 - [ ] 🔑 **Get [GitHub token](https://github.com/settings/tokens)**
-- [ ] ⚙️ **Configure environment** with token
+- [ ] ⚙️ **Configure environment** with API keys and GitHub token
+- [ ] 🚀 **Start development server**: `npm run dev`
 - [ ] 🤖 **Select Julia Agent models**
-- [ ] 🚀 **Start building** your first project
+- [ ] 🏗️ **Start building** your first project
 - [ ] 📊 **Experience the difference** in speed and quality
 
 ---
 
 **Transform your development workflow today with Julia Agents!**
 
-[![Get Started](https://img.shields.io/badge/🚀_Get_Started-julia--bolt.vercel.app-blue?style=for-the-badge)](https://julia-bolt.vercel.app/)
-[![Watch Demo](https://img.shields.io/badge/🎥_Watch_Demo-YouTube-red?style=for-the-badge)](https://youtu.be/CqAjMuUNEgU)
+[![Get Started](https://img.shields.io/badge/🚀_Get_Started-Clone_Repository-blue?style=for-the-badge)](https://github.com/Theideabased/julia_bolt)
 [![Documentation](https://img.shields.io/badge/📚_Documentation-Setup_Guide-green?style=for-the-badge)](./JULIA_AGENT_SETUP.md)
+[![License](https://img.shields.io/badge/�_License-MIT-yellow?style=for-the-badge)](./LICENSE)
 - ✅ Publish projects directly to GitHub (@goncaloalves)
 - ✅ Ability to enter API keys in the UI (@ali00209)
 - ✅ xAI Grok Beta Integration (@milutinke)
