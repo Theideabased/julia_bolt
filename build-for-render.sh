@@ -15,7 +15,7 @@ export RENDER=true
 
 # Set memory constraints and build
 echo "Building with reduced memory allocation..."
-NODE_OPTIONS='--max-old-space-size=256 --optimize-for-size --gc-interval=100' \
+NODE_OPTIONS='--max-old-space-size=256 --gc-interval=100' \
 NODE_ENV=production \
 RENDER=true \
 npx remix vite:build --config vite.render.config.ts
