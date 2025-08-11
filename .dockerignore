@@ -9,6 +9,11 @@
 CONTRIBUTING.md
 LICENSE
 README.md
+changelog.md
+CHANGES.md
+FAQ.md
+PROJECT.md
+docs/
 
 # Ignore environment examples and sensitive info
 .env
@@ -24,3 +29,39 @@ README.md
 logs
 dist-ssr
 .DS_Store
+
+# Ignore development and build tools
+eslint.config.mjs
+uno.config.ts
+vite.config.ts
+vite-electron.config.ts
+tsconfig.json
+wrangler.toml
+electron-builder.yml
+electron-update.yml
+notarize.cjs
+pre-start.cjs
+
+# Ignore scripts and bindings
+scripts/
+bindings.sh
+
+# Ignore Electron specific files
+electron/
+
+# Ignore Docker files themselves
+Dockerfile
+docker-compose.yaml
+.dockerignore
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore testing files
+**/*.test.*
+**/*.spec.*
+**/test/
+**/tests/

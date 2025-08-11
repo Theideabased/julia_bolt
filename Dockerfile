@@ -1,30 +1,65 @@
-ARG BASE=node:20.18.0
+# Use Alpine version of Node.js for smaller footprint
+ARG BASE=node:20.18.0-slim
+FROM ${BASE} AS builder
+
+WORKDIR /app
+
+# Install necessary system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy package files
+COPY package.json ./
+
+# Install dependencies without memory restrictions in build stage
+RUN npm install --silent --no-audit --no-fund
+
+# Copy the rest of your app's source code
+COPY . .
+
+# Pre-configure wrangler to disable metrics
+RUN mkdir -p /root/.config/.wrangler && \
+    echo '{"enabled":false}' > /root/.config/.wrangler/metrics.json
+
+# Build with memory restrictions only for the build step
+RUN NODE_OPTIONS='--max-old-space-size=448' NODE_ENV=production npm run build:docker
+
+# Production stage with smaller footprint
 FROM ${BASE} AS base
 
 WORKDIR /app
 
-# Install dependencies (this step is cached as long as the dependencies don't change)
-COPY package.json package-lock.json ./
+# Install only runtime dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Configure npm for better reliability and retry on network issues
-RUN npm config set fetch-timeout 600000 && \
-    npm config set fetch-retries 5 && \
-    npm config set fetch-retry-mintimeout 20000 && \
-    npm config set fetch-retry-maxtimeout 120000 && \
-    npm config set audit false && \
-    npm config set fund false
+# Copy package files for production install
+COPY package.json ./
 
-# Install dependencies with npm install (handles lock file mismatches)
-RUN npm install --production=false
+# Install only production dependencies with memory limit
+RUN NODE_OPTIONS="--max-old-space-size=256" npm install --only=production --silent --no-audit --no-fund
 
-# Copy the rest of your app's source code
-COPY . .
+# Copy built application from builder stage
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/bindings.sh ./
+
+# Copy other necessary files
+COPY --from=builder /app/wrangler.toml ./
+COPY --from=builder /root/.config/.wrangler /root/.config/.wrangler
+
+# Clean up to save space
+RUN npm cache clean --force
 
 # Expose the port the app runs on
 EXPOSE 5173
 
 # Development image
-FROM base AS bolt-ai-development
+FROM builder AS bolt-ai-development
 
 # Define the same environment variables for development
 ARG GROQ_API_KEY
@@ -92,12 +127,7 @@ ENV WRANGLER_SEND_METRICS=false \
     VITE_LOG_LEVEL=${VITE_LOG_LEVEL} \
     DEFAULT_NUM_CTX=${DEFAULT_NUM_CTX}\
     RUNNING_IN_DOCKER=true \
-    PORT=${PORT}
-
-# Pre-configure wrangler to disable metrics
-RUN mkdir -p /root/.config/.wrangler && \
-    echo '{"enabled":false}' > /root/.config/.wrangler/metrics.json
-
-RUN npm run build
+    PORT=${PORT} \
+    NODE_ENV=production
 
 CMD [ "npm", "run", "dockerstart"]

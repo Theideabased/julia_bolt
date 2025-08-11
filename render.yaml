@@ -1,18 +1,17 @@
 services:
   - type: web
     name: julia-bolt
-    runtime: docker
+    runtime: node
     plan: starter  # Change to 'standard' for production
-    dockerfilePath: ./Dockerfile
-    dockerContext: .
-    dockerTarget: bolt-ai-production
+    buildCommand: npm ci && ./build-for-render.sh
+    startCommand: ./start-render.sh
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_OPTIONS
+        value: '--max-old-space-size=256'
       - key: PORT
         value: 5173
-      - key: RUNNING_IN_DOCKER
-        value: true
       - key: WRANGLER_SEND_METRICS
         value: false
       - key: GROQ_API_KEY
@@ -46,7 +45,6 @@ services:
         - public/**
         - scripts/**
         - package.json
-        - pnpm-lock.yaml
+        - package-lock.json
         - vite.config.ts
         - tsconfig.json
-        - Dockerfile
