@@ -14,7 +14,7 @@
     "deploy": "npm run build && wrangler pages deploy",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' remix vite:build",
     "build:vercel": "node scripts/build-vercel.js",
-    "build:render": "NODE_OPTIONS='--max-old-space-size=448' NODE_ENV=production remix vite:build",
+    "build:render": "NODE_OPTIONS='--max-old-space-size=896' NODE_ENV=production remix vite:build",
     "build:docker": "NODE_OPTIONS='--max-old-space-size=448' NODE_ENV=production remix vite:build",
     "start:server": "NODE_ENV=production remix-serve build/server/index.js",
     "start": "remix-serve build/server/index.js",

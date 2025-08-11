@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: julia-bolt-simple
+    runtime: node
+    plan: standard  # 1GB memory
+    buildCommand: npm ci && NODE_OPTIONS='--max-old-space-size=896' npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GOOGLE_GENERATIVE_AI_API_KEY
+        sync: false
+      - key: TOGETHER_API_KEY
+        sync: false
+      - key: XAI_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false

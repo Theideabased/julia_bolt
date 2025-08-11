@@ -1,0 +1,61 @@
+name: Build and Deploy to Render
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: NODE_OPTIONS='--max-old-space-size=6144' npm run build:render
+      
+    - name: Create deployment artifact
+      run: |
+        mkdir -p deployment
+        cp -r build deployment/
+        cp package.json deployment/
+        cp package-lock.json deployment/
+        cp start-render.sh deployment/
+        cp bindings.sh deployment/
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: deployment/
+        retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./
+        
+    - name: Deploy to Render
+      run: |
+        echo "Build artifacts ready for Render deployment"
+        echo "Artifacts include:"
+        ls -la

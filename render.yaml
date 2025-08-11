@@ -2,14 +2,14 @@ services:
   - type: web
     name: julia-bolt
     runtime: node
-    plan: starter  # Change to 'standard' for production
-    buildCommand: npm ci && ./build-for-render.sh
+    plan: standard  # Upgrade to standard for more memory (1GB)
+    buildCommand: npm ci && NODE_OPTIONS='--max-old-space-size=896' npm run build:render
     startCommand: ./start-render.sh
     envVars:
       - key: NODE_ENV
         value: production
       - key: NODE_OPTIONS
-        value: '--max-old-space-size=448'
+        value: '--max-old-space-size=896'
       - key: PORT
         value: 5173
       - key: WRANGLER_SEND_METRICS
