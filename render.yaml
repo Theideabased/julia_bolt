@@ -9,7 +9,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: NODE_OPTIONS
-        value: '--max-old-space-size=256'
+        value: '--max-old-space-size=448'
       - key: PORT
         value: 5173
       - key: WRANGLER_SEND_METRICS
